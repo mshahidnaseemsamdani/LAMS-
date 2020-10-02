@@ -133,7 +133,7 @@ module.exports = function(passport, validation, email, User) {
       messages = messages.map((str, index) => ({ name: str}));
       res.render('signup', { hasErrors: (messages.length > 0) ? true : false, messages: messages});
     },
-
+    //HI
     signUp : passport.authenticate('local.signup', {
       successRedirect : '/login',
       failureRedirect : '/signup',
