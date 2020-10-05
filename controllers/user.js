@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(passport, validation, email, User) {
+module.exports = function(passport, validation, email, User, Lawyer) {
   return {
     setRouting : function(router) {
       router.get('/', this.homePage);
@@ -12,6 +12,12 @@ module.exports = function(passport, validation, email, User) {
 
           //case studies
           router.get('/cases', this.cases);
+
+
+          //signup
+          
+           //registerationform
+           router.get('/registractionform', this.registractionform);
 
            //blog
                     router.get('/blog', this.blog);
@@ -27,7 +33,7 @@ module.exports = function(passport, validation, email, User) {
 
          
         //contact
-          router.get('/cases', this.contact);
+          router.get('/contact', this.contact);
 
         //facebook
 
@@ -35,15 +41,25 @@ module.exports = function(passport, validation, email, User) {
       
       router.get('/auth/facebook/callback', this.facebookLoginCallback);
 
+  //profile
+  router.get('/profile', this.profile);
+
+
+
+    //dashboard
+     //router.get('/dashboard', this.dashboard);
+
+
+      
       router.get('/auth/google', this.googleLoginRedirect);
       router.get('/auth/google/callback', this.googleLoginCallback);
 			
       router.get('/login', this.loginView);
       router.post('/login', validation.getLoginValidation, this.login);
             
-      router.get('/signup', this.signUpView);
-      router.post('/signup', validation.getSignupValidation, this.signUp);
-			
+      router.get('/signup', this.lawyerSignupView);
+      router.post('/signup', validation.getSignupValidation, this.lawyerSignup);			
+      
       router.get('/forgot_password', this.forgotPasswordView);
       router.post('/forgot_password', this.forgotPassword);
       router.get('/auth/reset/:token', this.verifyToken);
@@ -72,6 +88,39 @@ module.exports = function(passport, validation, email, User) {
    cases : function(req, res){
   res.render('cases.ejs');
     },
+
+
+    //route of signup
+   lawyerSignupView : function(req, res){
+      let errors = req.flash('errors');
+      console.log(errors);
+      res.render("signup", {hasErrors: errors.length > 0, errors: errors});
+    },
+    lawyerSignup: function(req, res) {
+      let lawyer = new Lawyer();
+      
+      lawyer.first_name = req.body.first_name;
+      lawyer.last_name = req.body.last_name;
+      lawyer.email = req.body.email;
+      
+      lawyer.password = lawyer.encryptPassword(req.body.password);
+      
+      lawyer.cnic = req.body.cnic;
+      lawyer.contact_number = req.body.contact_number;
+
+      lawyer.save().then( savedLawyer => {
+        console.log(savedLawyer);
+      }).catch( e => {
+        console.log(e);
+      });
+    },
+
+
+          //route of registractionform
+          registractionform : function(req, res){
+    res.render('registractionform.ejs');
+      },
+
 
          //route of blog
          blog : function(req, res){
@@ -109,6 +158,15 @@ module.exports = function(passport, validation, email, User) {
         scope : 'email'  
     }),
 
+        //route profile
+   profile : function(req, res){
+    res.render('profile.ejs');
+      },
+  
+//route dashboard
+   dashboard : function(req, res){
+  res.render('dashboard.ejs');
+    },
      
     facebookLoginCallback : passport.authenticate('facebook', {
       successRedirect: '/dashboard',

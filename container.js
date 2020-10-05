@@ -11,7 +11,8 @@ var simpleDependencies = [
   ['path', 'path'],
   ['async', 'async'],
   // Users
-  ['User', './models/user-model']
+  ['User', './models/user-model'],
+  ['Lawyer', './models/lawyer-model']
 ];
 
 simpleDependencies.forEach(function(dependency){

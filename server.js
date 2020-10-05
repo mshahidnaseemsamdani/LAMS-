@@ -12,7 +12,6 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const validator = require('express-validator');
-const mustacheExpress = require('mustache-express');
 require('dotenv').config();
 
 // Container
@@ -45,8 +44,7 @@ container.resolve(function (_ , user) {
     app.use(express.static(path.join(__dirname, "/public")));
     //app.use("/*/plugins", express.static(path.join(__dirname, "/public/plugins")));
     //app.use("/*/dist", express.static(path.join(__dirname, "/public/dist")))
-    app.engine('html', mustacheExpress());
-    app.set('view engine', 'html');
+    app.set('view engine', 'ejs');
     app.set('views', __dirname + '/views');
 		
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -70,6 +68,7 @@ container.resolve(function (_ , user) {
     // App Routing 
     var router = require('express-promise-router')();
     user.setRouting(router);
+    //lawyer.setRouting(router);
     app.use(router);
 
     app.locals._ = _;

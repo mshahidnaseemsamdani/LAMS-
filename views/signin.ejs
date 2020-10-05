@@ -92,78 +92,47 @@
                     <div class="row ">
                         <div class="col-xl-12">
                             <div class="section-tittle section-tittle2 mb-70">
-                                <span>Only For Client</span>
-                                
-                                <h2>What's Your Problem !</h2>
+                                <span>Only For Lawyer</span>
+                                <h2>World's Leading Law Consultency Agency !</h2>
                             </div>
                         </div>
                     </div>
                     <!--End Section Tittle  -->
-                    <form id="contact-form" action="#" method="POST">
+                    <form id="contact-form" action="/signup" method="POST">
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
                             <div class="form-box user-icon mb-30">
-                                <input type="text" name="name" placeholder="Full Name" required>
+                                <input type="text"  required name="full_name" placeholder="Full Name">
                             </div>
                         </div>
 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-box subject-icon mb-30">
-                                <input type="text" name="fname" placeholder="Father Name:" required>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-box subject-icon mb-30">
-                                <input type="text" name="email" placeholder="Email:" required>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-box subject-icon mb-30">
-                                <input type="text" name="phone" placeholder="Phone:" required>
-                            </div>
-                        </div>
-
-                        <div style="margin-left: 180px;" class="col-lg-6 col-md-6">
-                            <div class="form-box subject-icon mb-30">
-                              <h3> Find Your Case </h3>
+                                <input type="email" required name="email" placeholder="Email:">
                             </div>
                         </div>
 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-box email-icon mb-30">
-            
-                               <select name="cc" style="width: 270px; height: 50px;" required>
-                                   <option value="1" >Criminal Cases </option>
-                                   <option value="2">Lahore</option>
-                                   <option value="3">Sheikhpura</option>
-                                   <option value="4">Safdarabad</option>
-                                   <option value="5">Farooqabad</option>
-                               </select>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-box email-icon mb-30">
-            
-                               <select style="width: 270px; height: 50px;" required>
-                                   <option>Civil Cases </option>
-                                   <option>Lahore</option>
-                                   <option>Sheikhpura</option>
-                                   <option>Safdarabad</option>
-                                   <option>Farooqabad</option>
-                               </select>
+                                <input type="password" name="password" placeholder="Password">
                             </div>
                         </div>
                        
-                       <textarea style="margin-bottom: 5px;" placeholder="Description"></textarea>
-                  
-                        <div class="submit-info">
-                                <button class="submit-btn2" value="submit">Submit</button>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-box email-icon mb-30">
+                                <input type="password" required name="confirm_password" placeholder="Confirm Password">
+                            </div>
                         </div>
-                      
+                       
+
+
+                        <div class="submit-info">
+                                <button class="submit-btn2" type="submit">Login Now</button>
+                        </div>
+                        <div style="padding-left: 10px;" class="submit-info">
+                            <button class="submit-btn2" type="submit"> <li><a href="/registractionform">New Registraction</a></li></button>
+                    </div>
+
                     </div>    
                     </div>
                     </form>

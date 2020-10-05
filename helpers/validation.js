@@ -31,41 +31,24 @@
 
       getSignupValidation : function(req, res, next) {
       
-        req.checkBody('country', 'Country of Residence is required').notEmpty();
-	req.checkBody('first_name', 'First name is required').notEmpty();
-	req.checkBody('last_name', 'Last name is required').notEmpty();
-        
-	req.checkBody('email', 'Email is Invalid').isEmail();
+        req.checkBody('first_name', 'First name is required').notEmpty();
+	      req.checkBody('last_name', 'Last name is required').notEmpty();
+        req.checkBody('email', 'Email is Invalid').isEmail();
         req.checkBody('email', 'Email must not be empty').notEmpty();
         req.checkBody('password', 'Password must not be empty').notEmpty();
         req.checkBody('password', 'Password must be 8 or more characters longer').isLength({min : 8});
             
-	req.checkBody('address', 'Address is Required').notEmpty();
-        req.checkBody('city', 'City is Required').notEmpty();
-        req.checkBody('state', 'State, Province or Region is required').notEmpty();
-			
-	req.getValidationResult().then( (result) => {
-	  var errors = result.array();
+	      
+	      req.getValidationResult().then( (result) => {
+	        var errors = result.array();
           var messages = [];
           errors.forEach(function(error){
             messages.push(error.msg);
           });
 
-          if(req.body.password != req.body.confirm_password) {
-	    messages.push("Password does not match");
-	  }
-				
-	  if(req.body.address.trim() == '') {
-	    messages.push("Address is required");
-	  }
-				
-	  if(req.body.zip_code && !(/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(req.body.zip_code)) ) {
-	    messages.push("Zip Code is not valid");
-	  }
-
           if(messages.length > 0) {
-	    messages = messages.map((str, index) => ({ name: str}));
-            res.render("signup", {hasErrors : true, messages : messages});
+             req.flash('errors', messages);
+             res.redirect('/signup');
           }
           else {
             next();
