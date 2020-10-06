@@ -9,6 +9,73 @@
     <link rel="manifest" href="site.webmanifest">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
 
+
+
+
+    <style>
+        body {
+          font-family: "Lato", sans-serif;
+        }
+        
+        .sidebar {
+          height: 100%;
+          width: 0;
+          position: fixed;
+          z-index: 1;
+          top: 0;
+          left: 0;
+          background-color: #111;
+          overflow-x: hidden;
+          transition: 0.5s;
+          padding-top: 60px;
+        }
+        
+        .sidebar a {
+          padding: 8px 8px 8px 32px;
+          text-decoration: none;
+          font-size: 25px;
+          color: #818181;
+          display: block;
+          transition: 0.3s;
+        }
+        
+        .sidebar a:hover {
+          color: #f1f1f1;
+        }
+        
+        .sidebar .closebtn {
+          position: absolute;
+          top: 0;
+          right: 25px;
+          font-size: 36px;
+          margin-left: 50px;
+        }
+        
+        .openbtn {
+          font-size: 20px;
+          cursor: pointer;
+          background-color: blue;
+          color: white;
+          padding: 10px 15px;
+          border: none;
+        }
+        
+        .openbtn:hover {
+          background-color: lightblue;
+        }
+        
+        #main {
+          transition: margin-left .5s;
+          padding: 16px;
+        }
+        
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+        @media screen and (max-height: 450px) {
+          .sidebar {padding-top: 15px;}
+          .sidebar a {font-size: 18px;}
+        }
+        </style>
+        
     <!-- CSS here -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -31,61 +98,52 @@
 
 
     <!--? Header Start -->
-    <div class="header-area">
-        <div class="main-header  header-sticky">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <!-- Logo -->
-                    <div class="col-xl-2 col-lg-2 col-md-1">
-                        <div class="logo">
-                            <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
-                        </div>
-                    </div>
-                    <div class="col-xl-10 col-lg-10 col-md-10">
-                        <div class="menu-main d-flex align-items-center justify-content-end">
-                            <!-- Main-menu -->
-                            <div class="main-menu f-right d-none d-lg-block">
-                                <nav> 
-                                    <ul id="navigation">
-                                        <li><a href="/">Home</a></li>
-                                        <li><a href="/about">About</a></li>
-                                        <li><a href="/services">Services</a></li>
-                                        <li><a href="/cases">Case Studies </a></li>
-                                      
-                                        <li><a href="/blog">Blog</a>
-                                            <ul class="submenu">
-                                                <li><a href="/blog">Blog</a></li>
-                                                <li><a href="blog_details">Blog Details</a></li>
-                                                <li><a href="/elements">Element</a></li>
-                                                <li><a href="/cases_details">Case Details </a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="/contact">Contact</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                 <div class="header-right-btn f-right d-none d-lg-block ml-30">
-                    <a href="/auth/facebook"><i style="color: black;" class="fab fa-facebook-f"></i></a>
-                    <a  href="/auth/google"><i style="margin-left: 20px; color: black;" class="fas fa-globe"></i></a>
-                      
-                        </div>
-                    </div>   
-                    <!-- Mobile Menu -->
-                    <div class="col-12">
-                        <div class="mobile_menu d-block d-lg-none"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Header End -->
 </header>
 
 
 <!-- Contact form Start -->
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a href="#">Cases Detail</a>
+    <a href="#">Services</a>
+    <a href="#">Clients</a>
+    <a href="#">Logout</a>
+  </div>
+  
+  <div id="main">
+    <button class="openbtn" onclick="openNav()">☰</button>  
+  </div>
+
+  <div class="container">
+  <% if(hasErrors) { %>
+    <div class="alert alert-danger alert-dismissible" id="box" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true" id="close">&times;</span>
+          </button>
+        <% _.forEach(errors, function(error) { %>
+                <p><%= error %></p>
+        <% }) %>
+    </div>
+<% } %>
+<% if(hasSuccess) { %>
+    <div class="alert alert-success alert-dismissible" id="box" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true" id="close">&times;</span>
+          </button>
+        <% _.forEach(messages, function(message) { %>
+                <p><%= message %></p>
+        <% }) %>
+    </div>
+<% } %>
+</div>
+
   <div class="contact-form bg-height pb-top" data-background="assets/img/gallery/section_bg05.png">
+  
     <div class="container">
+                
         <div class="row justify-content-center">
+            
             <div class="col-xl-8 col-lg-8">
                 <div class="form-wrapper">
                 <!--Section Tittle  -->
@@ -107,31 +165,32 @@
                         </div>
                         
                     </div>
+
                     <!--End Section Tittle  -->
-                    <form id="contact-form" action="#" method="POST">
+                    <form id="contact-form" action="/profile" method="POST">
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
                             <div class="form-box user-icon mb-30">
-                                <input type="text" name="name" placeholder="Full Name">
+                                <input type="text" name="first_name" placeholder="First Name">
                             </div>
                         </div>
 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-box user-icon mb-30">
-                                <input type="text" name="name" placeholder="Father Name">
+                                <input type="text" name="last_name" placeholder="Last Name">
                             </div>
                         </div>
 
 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-box subject-icon mb-30">
-                                <input type="text" name="subject" placeholder="CNIC NO:">
+                                <input type="text" name="cnic" placeholder="CNIC NO:">
                             </div>
                         </div>
 
                         <div class="col-lg-6 col-md-6">
                             <div class="form-box subject-icon mb-30">
-                                <input type="text" name="phone" placeholder="Phone NO:">
+                                <input type="text" name="contact_number" placeholder="Phone NO:">
                             </div>
                         </div>
 
@@ -150,25 +209,20 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="form-box email-icon mb-30">
             
-                               <select style="width: 270px; height: 50px;">
-                                   <option>City</option>
-                                   <option>Lahore</option>
-                                   <option>Sheikhpura</option>
-                                   <option>Safdarabad</option>
-                                   <option>Farooqabad</option>
+                               <select style="width: 270px; height: 50px;" name="city">
+                                   <option  value="-1">City</option>
+                                   <option  value="Lahore">Lahore</option>
+                                   <option  value="Sheikhupura">Sheikhpura</option>
+                                   <option  value="Safdarabad">Safdarabad</option>
+                                   <option  value="Farooqabad">Farooqabad</option>
                                </select>
                             </div>
                         </div>
                        
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-box email-icon mb-30">
-                               <textarea placeholder="Enter Your cases Detail"></textarea>
-                            </div>
-                        </div>
                         
                   
-                        <div class="submit-info">
-                                <button class="submit-btn2" type="submit">Login Now</button>
+                        <div style="margin-left: 100px;" class="submit-info">
+                                <button class="submit-btn2" type="submit">Update</button>
                         </div>
 
 
@@ -281,4 +335,28 @@
     </footer>
     
 </body>
+
+
+
+<script>
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+}
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $('#close').on('click', function(){
+        $('#box').fadeOut();
+    });
+</script>
+
+   
     </html>

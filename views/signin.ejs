@@ -85,6 +85,21 @@
 <!-- Contact form Start -->
   <div class="contact-form bg-height pb-top" data-background="assets/img/gallery/section_bg05.png">
     <div class="container">
+
+                <!-- Errors -->
+<% if(hasErrors) { %>
+    <div class="alert alert-danger alert-dismissible" id="box" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true" id="close">&times;</span>
+          </button>
+        <% _.forEach(errors, function(error) { %>
+                <p><%= error %></p>
+        <% }) %>
+    </div>
+<% } %>
+
+
+
         <div class="row justify-content-center">
             <div class="col-xl-8 col-lg-8">
                 <div class="form-wrapper">
@@ -98,14 +113,9 @@
                         </div>
                     </div>
                     <!--End Section Tittle  -->
-                    <form id="contact-form" action="/signup" method="POST">
+                    <form id="contact-form" action="/signin" method="POST">
                     <div class="row">
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-box user-icon mb-30">
-                                <input type="text"  required name="full_name" placeholder="Full Name">
-                            </div>
-                        </div>
-
+                       
                         <div class="col-lg-6 col-md-6">
                             <div class="form-box subject-icon mb-30">
                                 <input type="email" required name="email" placeholder="Email:">
@@ -118,11 +128,6 @@
                             </div>
                         </div>
                        
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-box email-icon mb-30">
-                                <input type="password" required name="confirm_password" placeholder="Confirm Password">
-                            </div>
-                        </div>
                        
 
 
@@ -130,7 +135,7 @@
                                 <button class="submit-btn2" type="submit">Login Now</button>
                         </div>
                         <div style="padding-left: 10px;" class="submit-info">
-                            <button class="submit-btn2" type="submit"> <li><a href="/registractionform">New Registraction</a></li></button>
+                            <button class="submit-btn2" type="submit"> <li><a href="/signup">New Registraction</a></li></button>
                     </div>
 
                     </div>    

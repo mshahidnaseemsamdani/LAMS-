@@ -2,7 +2,7 @@
 
   module.exports = function(formidable, path) {
     return {
-      getLoginValidation: (req, res, next) => {
+      getSignInValidation: (req, res, next) => {
         
         req.checkBody('email', 'Email is Invalid').isEmail();
         req.checkBody('email', 'Email must not be empty').notEmpty();
@@ -18,8 +18,8 @@
           });
 		
           if(messages.length > 0) {
-	    messages = messages.map((str, index) => ({ name: str}));
-	    res.render("login", {hasErrors : true, messages : messages});
+            req.flash('errors', messages);
+            res.redirect('/signin');
           }
           else {
             return next();
@@ -58,6 +58,40 @@
             throw err;
         });
       },
+
+      getProfileUpdateValidation: function(req, res, next) {
+        
+        req.checkBody('first_name', 'First name is required').notEmpty();
+	      req.checkBody('last_name', 'Last name is required').notEmpty();
+        req.checkBody('email', 'Email is Invalid').isEmail();
+        req.checkBody('email', 'Email must not be empty').notEmpty();
+        req.checkBody('cnic', 'CNIC must not be empty').notEmpty();
+        req.checkBody('address', 'Address must not be empty').notEmpty();
+            
+	      
+	      req.getValidationResult().then( (result) => {
+	        var errors = result.array();
+          var messages = [];
+          errors.forEach(function(error){
+            messages.push(error.msg);
+          });
+
+          if(req.body.city == '-1') {
+            messages.push("Please select city");
+          }
+          if(messages.length > 0) {
+             req.flash('errors', messages);
+             res.redirect('/profile');
+          }
+          else {
+            next();
+          }
+        }).catch( (err) => {
+          if(err) 
+            throw err;
+        });
+      },
+
 		
       resetPassword : function(req, res, next) {
         req.checkBody('password', 'Password must not be empty').notEmpty();
@@ -72,7 +106,7 @@
             messages.push(error.msg);
           });
 	
-	  if(req.body.password != req.body.confirm_password) {
+	    if(req.body.password != req.body.confirm_password) {
 	    messages.push("Password does not match");
 	  }
 					

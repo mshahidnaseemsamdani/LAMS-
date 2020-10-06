@@ -13,12 +13,8 @@ module.exports = function(passport, validation, email, User, Lawyer) {
           //case studies
           router.get('/cases', this.cases);
 
-
-          //signup
-          
-           //registerationform
-           router.get('/registractionform', this.registractionform);
-
+ 
+         
            //blog
                     router.get('/blog', this.blog);
 
@@ -41,10 +37,11 @@ module.exports = function(passport, validation, email, User, Lawyer) {
       
       router.get('/auth/facebook/callback', this.facebookLoginCallback);
 
-  //profile
-  router.get('/profile', this.profile);
+     //profile
+             router.get('/profile', this.profileView);
 
-
+      //profile
+      router.post('/profile', validation.getProfileUpdateValidation, this.profile);
 
     //dashboard
      //router.get('/dashboard', this.dashboard);
@@ -55,11 +52,19 @@ module.exports = function(passport, validation, email, User, Lawyer) {
       router.get('/auth/google/callback', this.googleLoginCallback);
 			
       router.get('/login', this.loginView);
-      router.post('/login', validation.getLoginValidation, this.login);
-            
+      //router.post('/login', validation.getLoginValidation, this.login);
+
+
+      
+      //signup get & post       
       router.get('/signup', this.lawyerSignupView);
       router.post('/signup', validation.getSignupValidation, this.lawyerSignup);			
       
+      
+    router.get('/signin', this.lawyerSigninView);
+     router.post('/signin', validation.getSignInValidation, this.lawyerSignin);			
+     
+         
       router.get('/forgot_password', this.forgotPasswordView);
       router.post('/forgot_password', this.forgotPassword);
       router.get('/auth/reset/:token', this.verifyToken);
@@ -89,6 +94,8 @@ module.exports = function(passport, validation, email, User, Lawyer) {
   res.render('cases.ejs');
     },
 
+    
+
 
     //route of signup
    lawyerSignupView : function(req, res){
@@ -109,17 +116,50 @@ module.exports = function(passport, validation, email, User, Lawyer) {
       lawyer.contact_number = req.body.contact_number;
 
       lawyer.save().then( savedLawyer => {
-        console.log(savedLawyer);
+        if(savedLawyer) {
+          res.redirect('/signin');
+        }
       }).catch( e => {
         console.log(e);
       });
     },
 
+    profile: function(req, res) {
+      Lawyer.findOneAndUpdate(
+        {_id: req.session.lawyer._id},
+        {
+          first_name:req.body.first_name, 
+          last_name:req.body.last_name,
+          cnic:req.body.cnic,
+          contact_number:req.body.contact_number,
+          email:req.body.email,
+          address:req.body.address,
+          city:req.body.city,
+        }, function (savedLawyer) {
+        req.flash('success', ['Your profile has been updated']);
+        res.redirect('/profile');
+      })
+    }, 
+    
+    lawyerSigninView : function(req, res){
+      let errors = req.flash('errors');
+      res.render("signin", {hasErrors: errors.length > 0, errors: errors});
+    },
+    lawyerSignin: function(req, res) {
+      Lawyer.findOne({
+        email: req.body.email
+      }, function(err, lawyer) {
+        if(!lawyer || !lawyer.comparePassword(req.body.password)) {
+          req.flash('errors', ['Invalid credentials']);
+          return res.redirect('/signin');
+       }
+        req.session.lawyer = lawyer;
+        res.redirect('/profile');
+      })
+    },
 
-          //route of registractionform
-          registractionform : function(req, res){
-    res.render('registractionform.ejs');
-      },
+
+
 
 
          //route of blog
@@ -145,8 +185,12 @@ module.exports = function(passport, validation, email, User, Lawyer) {
     },
 
 
-
- 
+        //route signin
+   signin : function(req, res){
+    res.render('signin.ejs');
+      },
+  
+    
           //route of contact
           contact : function(req, res){
             res.render('contact.ejs');
@@ -158,10 +202,14 @@ module.exports = function(passport, validation, email, User, Lawyer) {
         scope : 'email'  
     }),
 
+    
         //route profile
-   profile : function(req, res){
-    res.render('profile.ejs');
-      },
+   profileView : function(req, res){
+     let lawyer = req.session.lawyer
+     let errors = req.flash('errors');
+     let success = req.flash('success');
+     res.render("profile.ejs", {hasErrors: errors.length > 0, errors: errors, hasSuccess: success.length > 0, messages: success, lawyer: lawyer});
+    },
   
 //route dashboard
    dashboard : function(req, res){
